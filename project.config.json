@@ -41,7 +41,7 @@
     "compileType": "game",
     "libVersion": "2.20.1",
     "appid": "wxcb4597e725f2db6c",
-    "projectname": "7.pixi-game",
+    "projectname": "0.wx-game-template",
     "packOptions": {
         "ignore": [
             {

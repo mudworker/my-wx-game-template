@@ -37,6 +37,6 @@ export default {
         bird: 'images/bird.png',
         pipe: 'images/pipe.png'
     },
-    images:[]
+    images:{}
 
 }

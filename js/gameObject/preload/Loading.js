@@ -8,7 +8,7 @@ const y = config.GAME_HEIGHT / 2 + h
 /**
  * 加载进度条
  */
-export default class Loading {
+export default class Loading extends ImageTexture {
     constructor(ctx) {
         super(ctx, w, h, x, y)
     }

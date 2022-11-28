@@ -3,5 +3,5 @@ export default {
     isGameOver: false,
     isHit: false,
     isPause: false,
-    scene: 'welcome', // welcome\game\menu...
+    scene: 'preload', // preload\main\menu...
 }

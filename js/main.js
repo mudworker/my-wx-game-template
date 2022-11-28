@@ -6,6 +6,8 @@ import Bird from './gameObject/main/Bird'
 import Pipes from './gameObject/main/Pipes'
 import Event from './gameObject/main/Event'
 import ScoreText from './gameObject/main/ScoreText'
+
+import ProloadScene from './scene/Preload'
 const ctx = canvas.getContext('2d')
 export default class Main {
   constructor() {
@@ -30,6 +32,7 @@ export default class Main {
   }
 
   init() {
+    this.preloadScene = new ProloadScene(ctx)
     this.background = new Background(ctx)
     this.floor = new Floor(ctx, this.background)
     this.bird = new Bird(ctx, this.background)
@@ -45,6 +48,19 @@ export default class Main {
   }
 
   render() {
+    if (store.scene === 'preload') {
+      this.preload()
+    } else if (store.scene === 'main') {
+      this.rendMain()
+    }
+    
+  }
+
+  preload() {
+    this.preloadScene.render()
+  }
+
+  rendMain(){
     this.background.draw()
 
     this.pipes.draw()
