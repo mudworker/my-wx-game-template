@@ -10,19 +10,17 @@ export default class Floor extends ImageTexture {
     fromX = 0
     speed = 2.5
     isStop = true
+    loading = false
     constructor(ctx, bg) {
         const y = bg.h + bg.y
-        super(ctx, w, h, x, y, config.assets.floor)
+        super(ctx, w, h, x, y, 'floor')
         this.bg = bg
+        this.loadImage()
     }
 
-    loadImage(imgSrc) {
+    loadImage() {
         this.n = Math.ceil(config.GAME_WIDTH / w) + 1
-        console.log(this.n)
-        this.imgObj = new Image()
-        this.imgObj.src = imgSrc
-        this.imgObj.onload = () => {
-            const canvas = wx.createCanvas()
+        const canvas = wx.createCanvas()
             const canCtx = canvas.getContext('2d')
             canvas.height = this.h
             canvas.width = this.w * this.n * 2
@@ -33,7 +31,6 @@ export default class Floor extends ImageTexture {
             this.imgObj.onload = () => {
                 this.loading = false
             }
-        }
     }
 
     draw() {

@@ -7,17 +7,18 @@ export default class ScoreText extends ImageTexture {
     ctx
     score = 0
     fontSize = 50
+    color = '#fff111'
 
     constructor(ctx) {
         super(ctx, 0, 0, x, y)
         this.ctx = ctx
-        this.fontSize*=config.ratio
+        this.fontSize *= config.ratio
     }
 
     draw() {
         this.ctx.save()
         this.ctx.font = `${this.fontSize}px serif`
-        this.ctx.fillStyle = '#fff111'
+        this.ctx.fillStyle = this.color
         this.ctx.fillText(`Score:${this.score}`, this.posX, this.posY)
         this.ctx.restore()
     }
@@ -26,7 +27,7 @@ export default class ScoreText extends ImageTexture {
         this.score += s
     }
 
-    restart(){
+    restart() {
         this.score = 0
     }
 }

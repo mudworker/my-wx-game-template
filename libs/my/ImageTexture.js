@@ -16,9 +16,8 @@ export default class ImageTexture {
     width // 宽度
     height // 高度
     imgObj
-    loading = true
 
-    constructor(ctx, w, h, x, y, imgSrc = null) {
+    constructor(ctx, w, h, x, y, imgName = null) {
         this.ctx = ctx
         this.w = w
         this.h = h
@@ -32,10 +31,8 @@ export default class ImageTexture {
         this.posY = this.y * config.ratio + config.disY
         this.width = this.w * this.scaleX
         this.height = this.h * this.scaleY
-        if (imgSrc) {
-            this.loadImage(imgSrc)
-        } else {
-            this.loading = false
+        if (imgName) {
+            this.imgObj = config.images[imgName]
         }
     }
 
@@ -46,22 +43,12 @@ export default class ImageTexture {
         this.height = this.h * this.scaleY
     }
 
-    loadImage(imgSrc) {
-        this.imgObj = new Image()
-        this.imgObj.src = imgSrc
-        this.imgObj.onload = () => {
-            this.loading = false
-        }
-    }
-
     render() {
-        if (!this.loading) {
-            this.ctx.save()
-            // 设定坐标原点
-            this.ctx.translate(this.posX, this.posY) // 以本物体左上角为缩放原点
-            this.ctx.scale(this.scaleX, this.scaleY)
-            this.ctx.drawImage(this.imgObj, 0, 0, this.w, this.h, 0, 0, this.w, this.h)
-            this.ctx.restore()
-        }
+        this.ctx.save()
+        // 设定坐标原点
+        this.ctx.translate(this.posX, this.posY) // 以本物体左上角为缩放原点
+        this.ctx.scale(this.scaleX, this.scaleY)
+        this.ctx.drawImage(this.imgObj, 0, 0, this.w, this.h, 0, 0, this.w, this.h)
+        this.ctx.restore()
     }
 }

@@ -12,14 +12,14 @@ export default class Bird extends Sprite {
     status = 'static'
     angle = 0 // 角度（-45度到90度）
     angleSpeed = 4 // 角度旋转速度
-    gravity = 0.5 // 重力（向下的位移加速度）
+    gravity = 0.25 // 重力（向下的位移加速度）
     downSpeed = 0 // 向下的位移速度
     upSpeed = 7 // 向上飞的匀速度
     flyTime = 200 // 飞行持续事件
     flyTimeOut = null // 飞行定时器
     oraHeight // 原始高度
     constructor(ctx, background) {
-        super(ctx, w, h, x, y, config.assets.bird, n, s)
+        super(ctx, w, h, x, y, 'bird', n, s)
         this.oraHeight = this.posY
         this.gravity *= config.ratio
         this.upSpeed *= config.ratio

@@ -13,15 +13,14 @@ export default class Background extends ImageTexture {
     status = 'static'
     fromX = 0
     isStop = true
+    loading = true
     constructor(ctx) {
-        super(ctx, w, h, x, y, config.assets.background)
+        super(ctx, w, h, x, y,'background')
+        this.loadImage()
     }
 
-    loadImage(imgSrc) {
-        this.imgObj = new Image()
-        this.imgObj.src = imgSrc
-        this.imgObj.onload = () => {
-            const canvas = wx.createCanvas()
+    loadImage() {
+        const canvas = wx.createCanvas()
             const canCtx = canvas.getContext('2d')
             canvas.height = this.h
             canvas.width = this.w * 3
@@ -32,7 +31,6 @@ export default class Background extends ImageTexture {
             this.imgObj.onload = () => {
                 this.loading = false
             }
-        }
     }
 
     draw() {
