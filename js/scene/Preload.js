@@ -27,7 +27,6 @@ export default class ProloadScene {
           this.game.mainScene.start()
           setTimeout(() => {
             store.scene = 'main'
-            console.log('toMain')
           }, 1000)
         }
       }

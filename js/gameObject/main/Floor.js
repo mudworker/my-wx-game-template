@@ -21,16 +21,27 @@ export default class Floor extends ImageTexture {
     loadImage() {
         this.n = Math.ceil(config.GAME_WIDTH / w) + 1
         const canvas = wx.createCanvas()
-            const canCtx = canvas.getContext('2d')
-            canvas.height = this.h
-            canvas.width = this.w * this.n * 2
-            for (let i = 0; i <= this.n; i++) {
-                canCtx.drawImage(this.imgObj, this.w * i, 0, this.w, this.h)
+        const canCtx = canvas.getContext('2d')
+        canvas.height = this.h
+        canvas.width = this.w * this.n
+        for (let i = 0; i <= this.n; i++) {
+            canCtx.drawImage(this.imgObj, this.w * i, 0, this.w, this.h)
+        }
+        const fs = wx.getFileSystemManager() //声明文件系统
+        //随机定义路径名称
+        let times = new Date().getTime() //当前时间，防止与其他文件重复
+        let imgUrl = wx.env.USER_DATA_PATH + '/' + times + '.png' //定义路径
+        fs.writeFile({
+            filePath: imgUrl, //要写的文件地址
+            data: canvas.toDataURL().slice(22), //内容来源
+            encoding: 'base64', //内容类型
+            success: () => {
+                this.imgObj.src = imgUrl
+                this.imgObj.onload = () => {
+                    this.loading = false
+                }
             }
-            this.imgObj.src = canvas.toDataURL()
-            this.imgObj.onload = () => {
-                this.loading = false
-            }
+        })
     }
 
     draw() {
@@ -68,7 +79,7 @@ export default class Floor extends ImageTexture {
         this.isStop = true
     }
 
-    restart(){
+    restart() {
         this.fromX = 0
         this.speed = 2.5
         this.start()

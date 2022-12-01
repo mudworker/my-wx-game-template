@@ -15,22 +15,35 @@ export default class Background extends ImageTexture {
     isStop = true
     loading = true
     constructor(ctx) {
-        super(ctx, w, h, x, y,'background')
+        super(ctx, w, h, x, y, 'background')
         this.loadImage()
     }
 
     loadImage() {
         const canvas = wx.createCanvas()
-            const canCtx = canvas.getContext('2d')
-            canvas.height = this.h
-            canvas.width = this.w * 3
-            canCtx.drawImage(this.imgObj, 0, 0, this.w, this.h)
-            canCtx.drawImage(this.imgObj, this.w, 0, this.w, this.h)
-            canCtx.drawImage(this.imgObj, this.w * 2, 0, this.w, this.h)
-            this.imgObj.src = canvas.toDataURL()
-            this.imgObj.onload = () => {
-                this.loading = false
+        const canCtx = canvas.getContext('2d')
+        canvas.height = this.h
+        canvas.width = this.w * 2
+        canCtx.drawImage(this.imgObj, 0, 0, this.w, this.h)
+        canCtx.drawImage(this.imgObj, this.w, 0, this.w, this.h)
+        canCtx.drawImage(this.imgObj, this.w * 2, 0, this.w, this.h)
+
+        const fs = wx.getFileSystemManager() //声明文件系统
+        //随机定义路径名称
+        let times = new Date().getTime() //当前时间，防止与其他文件重复
+        let imgUrl = wx.env.USER_DATA_PATH + '/' + times + '.png' //定义路径
+        fs.writeFile({
+            filePath: imgUrl, //要写的文件地址
+            data: canvas.toDataURL().slice(22), //内容来源
+            encoding: 'base64', //内容类型
+            success: () => {
+                this.imgObj.src = imgUrl
+                console.log(imgUrl)
+                this.imgObj.onload = () => {
+                    this.loading = false
+                }
             }
+        })
     }
 
     draw() {
