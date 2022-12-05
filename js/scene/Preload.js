@@ -1,17 +1,34 @@
 import config from '../config'
 import store from '../store'
 import Loading from '../gameObject/preload/Loading'
+import MainScene from '../scene/Main'
 
 export default class ProloadScene {
   cnt = 0
   loadSprite
-  constructor(ctx, game) {
+  bindLoop
+  aniId
+  constructor(ctx, canvas, game, key = 'preload') {
     this.ctx = ctx
+    this.canvas = canvas
     this.game = game
+    this.key = key
     this.loadSprite = new Loading(ctx)
     this.start()
   }
 
+  // 循环函数
+  loop() {
+    if (store.scene === this.key) {
+      this.render()
+      this.aniId = requestAnimationFrame(
+        this.bindLoop,
+        canvas
+      )
+    }
+  }
+
+  // 开启场景
   start() {
     // 预加载资源
     const assets = config.assets
@@ -24,16 +41,22 @@ export default class ProloadScene {
         this.loadSprite.update(this.cnt / total)
         // 判断是否全部加载完毕
         if (this.cnt === total) {
-          this.game.mainScene.start()
-          setTimeout(() => {
-            store.scene = 'main'
-          }, 1000)
+          let mainScene = new MainScene(this.ctx, this.canvas, this.game)
+          store.scene = 'main'
+          mainScene.start()
         }
       }
     }
+    this.bindLoop = this.loop.bind(this)
+    this.aniId = requestAnimationFrame(
+      this.bindLoop,
+      canvas
+    )
   }
 
   render() {
+      this.ctx.clearRect(0, 0, config.windowWidth, config.windowHeight)
     this.loadSprite.render()
+      this.game.drawBlack()
   }
 }

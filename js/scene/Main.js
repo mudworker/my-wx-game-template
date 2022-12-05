@@ -9,12 +9,27 @@ import ScoreText from '../gameObject/main/ScoreText'
 
 export default class MainScene {
     ctx
-    constructor(ctx, game, key = 'main') {
+    bindLoop
+    aniId
+    constructor(ctx, canvas, game, key = 'main') {
         this.ctx = ctx
+        this.canvas = canvas
         this.game = game
         this.key = key
     }
 
+    // 循环函数
+    loop() {
+        if (store.scene === this.key) {
+            this.render()
+            this.aniId = requestAnimationFrame(
+                this.bindLoop,
+                canvas
+            )
+        }
+    }
+
+    // 开启场景
     start() {
         this.background = new Background(this.ctx)
         this.floor = new Floor(this.ctx, this.background)
@@ -22,9 +37,16 @@ export default class MainScene {
         this.scoreText = new ScoreText(this.ctx)
         this.pipes = new Pipes(this.ctx, this.floor, this.scoreText)
         this.event = new Event(this)
+
+        this.bindLoop = this.loop.bind(this)
+        this.aniId = requestAnimationFrame(
+            this.bindLoop,
+            canvas
+        )
     }
 
     render() {
+        this.ctx.clearRect(0, 0, config.windowWidth, config.windowHeight)
         this.background.draw()
 
         this.pipes.draw()
@@ -53,6 +75,8 @@ export default class MainScene {
             this.pipes.stop()
             store.isHit = true
         }
+
+        this.game.drawBlack()
     }
 
     restart() {

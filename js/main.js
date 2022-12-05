@@ -12,6 +12,7 @@ export default class Main {
     wx.setPreferredFramesPerSecond(60)
     // 初始化
     this.init()
+
   }
 
   // 按比例视图，超出部分黑色遮罩层
@@ -29,26 +30,9 @@ export default class Main {
   }
 
   init() {
-    this.preloadScene = new ProloadScene(ctx,this)
-    this.mainScene = new MainScene(ctx,this)
-
-    this.bindLoop = this.loop.bind(this)
-    this.aniId = requestAnimationFrame(
-      this.bindLoop,
-      canvas
-    )
+    this.preloadScene = new ProloadScene(ctx, canvas, this)
   }
 
-  render() {
-    ctx.clearRect(0, 0, config.windowWidth, config.windowHeight)
-    if (store.scene === 'preload') {
-      this.preload()
-    } else if (store.scene === 'main') {
-      this.rendMain()
-    }
-    this.drawBlack()
-
-  }
 
   preload() {
     this.preloadScene.render()
@@ -57,14 +41,4 @@ export default class Main {
   rendMain() {
     this.mainScene.render()
   }
-
-  loop() {
-    this.render()
-    this.aniId = requestAnimationFrame(
-      this.bindLoop,
-      canvas
-    )
-  }
-
-  
 }
